@@ -1,224 +1,546 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>5 Months of Us 💛</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background-color: #000;
-      color: #f5c542;
-      overflow-x: hidden;
-    }
-
-    section {
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      text-align: center;
-      padding: 40px;
-      box-sizing: border-box;
-      transition: opacity 1s ease, transform 1s ease;
-    }
-
-    .hidden {
-      opacity: 0;
-      transform: translateY(50px);
-    }
-
-    .visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .intro h1 {
-      font-size: 2.5rem;
-      color: #f5c542;
-      animation: fadeIn 2s ease forwards;
-    }
-
-    .intro p {
-      font-size: 1.2rem;
-      color: #d4af37;
-      opacity: 0;
-      animation: fadeIn 2s ease 1s forwards;
-    }
-
-    .btn {
-      margin-top: 30px;
-      padding: 10px 25px;
-      background: #f5c542;
-      color: #000;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-      border-radius: 25px;
-      transition: background 0.3s ease;
-    }
-
-    .btn:hover {
-      background: #ffde59;
-    }
-
-    .photo {
-      max-width: 250px;
-      border: 3px solid #f5c542;
-      border-radius: 15px;
-      box-shadow: 0 0 15px #f5c54288;
-      margin-top: 20px;
-    }
-
-    .final audio {
-      margin-top: 20px;
-      width: 80%;
-      max-width: 400px;
-    }
-
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(20px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-
-    /* Floating Hearts */
-    .hearts {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 0;
-    }
-
-    .heart {
-      position: absolute;
-      bottom: -50px;
-      width: 20px;
-      height: 20px;
-      background: #f5c542;
-      transform: rotate(45deg);
-      animation: float 8s linear infinite;
-    }
-
-    .heart::before,
-    .heart::after {
-      content: "";
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: #f5c542;
-      border-radius: 50%;
-    }
-
-    .heart::before {
-      top: -10px;
-      left: 0;
-    }
-
-    .heart::after {
-      left: -10px;
-      top: 0;
-    }
-
-    @keyframes float {
-      0% { transform: translateY(0) rotate(45deg); opacity: 1; }
-      100% { transform: translateY(-110vh) rotate(45deg); opacity: 0; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soham's Schedule</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --card: #111111;
+    --border: #1e1e1e;
+    --accent: #c8f135;
+    --accent2: #f1a135;
+    --text: #e8e8e8;
+    --muted: #555;
+    --study: #1a2e0a;
+    --study-border: #4a8a10;
+    --coaching: #0a1a2e;
+    --coaching-border: #1060a0;
+    --personal: #2a1a0a;
+    --personal-border: #a06010;
+    --chandu: #2a0a1a;
+    --chandu-border: #a01060;
+    --tuition: #1a0a2e;
+    --tuition-border: #6010a0;
+    --sleep: #141414;
+    --sleep-border: #333;
+  }
+ 
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+ 
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+ 
+  /* grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.4;
+  }
+ 
+  .header {
+    padding: 40px 24px 20px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+ 
+  .header-top {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+ 
+  .title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 12vw, 88px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    color: var(--accent);
+  }
+ 
+  .title span {
+    color: var(--text);
+    opacity: 0.3;
+  }
+ 
+  .live-clock {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    text-align: right;
+  }
+ 
+  .live-time {
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--accent);
+    display: block;
+    line-height: 1;
+  }
+ 
+  .day-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 16px 24px;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--border);
+    scrollbar-width: none;
+  }
+  .day-tabs::-webkit-scrollbar { display: none; }
+ 
+  .day-tab {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+ 
+  .day-tab:hover { color: var(--text); border-color: #333; }
+  .day-tab.active {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+    font-weight: 700;
+  }
+  .day-tab.today-marker {
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+  .day-tab.today-marker.active {
+    background: var(--accent2);
+    color: #000;
+    border-color: var(--accent2);
+  }
+ 
+  .schedule-container {
+    padding: 24px;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+ 
+  .day-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+ 
+  .day-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 2px;
+    color: var(--text);
+  }
+ 
+  .day-stats {
+    display: flex;
+    gap: 12px;
+  }
+ 
+  .stat-pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+ 
+  .stat-pill.study { border-color: var(--study-border); color: var(--accent); }
+ 
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+ 
+  .block {
+    display: flex;
+    gap: 16px;
+    align-items: stretch;
+    padding: 12px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    position: relative;
+    transition: all 0.15s;
+    animation: slideIn 0.3s ease both;
+  }
+ 
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-8px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+ 
+  .block:hover { border-color: #2a2a2a; background: #161616; }
+ 
+  .block.type-study { background: var(--study); border-color: var(--study-border); }
+  .block.type-coaching { background: var(--coaching); border-color: var(--coaching-border); }
+  .block.type-personal { background: var(--personal); border-color: var(--personal-border); }
+  .block.type-chandu { background: var(--chandu); border-color: var(--chandu-border); }
+  .block.type-tuition { background: var(--tuition); border-color: var(--tuition-border); }
+  .block.type-current {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 1px var(--accent), 0 0 20px rgba(200, 241, 53, 0.08);
+  }
+ 
+  .block-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+    min-width: 90px;
+    padding-top: 2px;
+  }
+ 
+  .block-content { flex: 1; }
+ 
+  .block-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.3;
+  }
+ 
+  .block-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+    margin-top: 3px;
+  }
+ 
+  .current-indicator {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 1.5s infinite;
+  }
+ 
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: translateY(-50%) scale(1); }
+    50% { opacity: 0.5; transform: translateY(-50%) scale(1.5); }
+  }
+ 
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 20px 24px;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+  }
+ 
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+ 
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+  }
+ 
+  .weekly-strip {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+  }
+ 
+  .weekly-day {
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+ 
+  .weekly-day-name { margin-bottom: 4px; letter-spacing: 0.5px; }
+ 
+  .weekly-bar {
+    height: 40px;
+    border-radius: 3px;
+    background: var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+ 
+  .weekly-bar-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--accent);
+    border-radius: 3px;
+    transition: height 0.5s ease;
+  }
+ 
+  .weekly-hours {
+    margin-top: 4px;
+    color: var(--accent);
+    font-weight: 500;
+  }
+ 
+  .hidden { display: none; }
+</style>
 </head>
 <body>
-
-  <div class="hearts"></div>
-
-  <!-- INTRO -->
-  <section class="intro visible" id="intro">
-    <h1>Hey Bubu ❤️</h1>
-    <p>5 months... and still, you're my favorite part of every day.</p>
-    <button class="btn" onclick="scrollToNext()">Tap to Begin</button>
-  </section>
-
-  <!-- MONTH 1 -->
-  <section class="hidden">
-    <h2>Month 1</h2>
-    <p>Where it all began — the start of something beautiful.</p>
-    <img src="photo1.jpg" class="photo" alt="Month 1">
-  </section>
-
-  <!-- MONTH 2 -->
-  <section class="hidden">
-    <h2>Month 2</h2>
-    <p>From shy smiles to long talks — we kept finding magic in each other.</p>
-    <img src="photo2.jpg" class="photo" alt="Month 2">
-  </section>
-
-  <!-- MONTH 3 -->
-  <section class="hidden">
-    <h2>Month 3</h2>
-    <p>The bond grew stronger. Every laugh, every hug — gold.</p>
-    <img src="photo3.jpg" class="photo" alt="Month 3">
-  </section>
-
-  <!-- MONTH 4 -->
-  <section class="hidden">
-    <h2>Month 4</h2>
-    <p>We had our moments, but we never stopped choosing each other.</p>
-    <img src="photo4.jpg" class="photo" alt="Month 4">
-  </section>
-
-  <!-- MONTH 5 -->
-  <section class="hidden">
-    <h2>Month 5</h2>
-    <p>And here we are — 5 months later, still falling for you every day.</p>
-    <img src="photo5.jpg" class="photo" alt="Month 5">
-  </section>
-
-  <!-- FINAL -->
-  <section class="hidden final">
-    <h2>Here’s to forever, my Chandu 💛</h2>
-    <p>Click play below — it’s from me, for you.</p>
-    <audio controls>
-      <source src="voice.mp3" type="audio/mpeg">
-      Your browser does not support the audio element.
-    </audio>
-  </section>
-
-  <script>
-    // Floating hearts
-    const heartsContainer = document.querySelector('.hearts');
-    for (let i = 0; i < 20; i++) {
-      const heart = document.createElement('div');
-      heart.className = 'heart';
-      heart.style.left = Math.random() * 100 + '%';
-      heart.style.animationDelay = Math.random() * 8 + 's';
-      heart.style.width = heart.style.height = Math.random() * 15 + 15 + 'px';
-      heartsContainer.appendChild(heart);
-    }
-
-    // Scroll animation
-    const sections = document.querySelectorAll('section');
-    const revealOnScroll = () => {
-      const triggerBottom = window.innerHeight * 0.85;
-      sections.forEach(section => {
-        const rect = section.getBoundingClientRect();
-        if (rect.top < triggerBottom) {
-          section.classList.add('visible');
-          section.classList.remove('hidden');
-        }
-      });
-    };
-    window.addEventListener('scroll', revealOnScroll);
-
-    function scrollToNext() {
-      window.scrollTo({
-        top: window.innerHeight,
-        behavior: 'smooth'
-      });
-    }
-  </script>
+ 
+<div class="header">
+  <div class="header-top">
+    <div class="title">DAILY<br><span>GRIND</span></div>
+    <div class="live-clock">
+      <span class="live-time" id="clock">00:00</span>
+      <span id="date-display">loading...</span>
+    </div>
+  </div>
+</div>
+ 
+<div class="day-tabs" id="dayTabs"></div>
+ 
+<div class="schedule-container">
+  <div class="day-header">
+    <div class="day-name" id="activeDayName">MONDAY</div>
+    <div class="day-stats">
+      <div class="stat-pill study" id="studyHours">5.5 HRS STUDY</div>
+    </div>
+  </div>
+  <div class="timeline" id="timeline"></div>
+</div>
+ 
+<div class="weekly-strip" id="weeklyStrip"></div>
+ 
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#4a8a10"></div> Study</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#1060a0"></div> Coaching</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#6010a0"></div> Tuition</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#a06010"></div> Personal</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#a01060"></div> Chandu</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#333"></div> Routine</div>
+</div>
+ 
+<script>
+const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+const fullDays = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
+ 
+const schedule = {
+  MON: {
+    study: 5.5,
+    blocks: [
+      { time: '7:00 – 7:30', label: 'Morning routine', type: 'routine', tag: 'wake up / freshen up', start: 7*60, end: 7*60+30 },
+      { time: '7:30 – 9:30', label: 'Self-study', type: 'study', tag: '2 hrs', start: 7*60+30, end: 9*60+30 },
+      { time: '9:30 – 10:20', label: 'Breakfast + travel to coaching', type: 'routine', tag: 'walking distance', start: 9*60+30, end: 10*60+20 },
+      { time: '10:40 – 3:20', label: 'Aakash Coaching', type: 'coaching', tag: 'Physics / Chem / Bio', start: 10*60+40, end: 15*60+20 },
+      { time: '3:20 – 4:00', label: 'Break / decompress', type: 'personal', tag: 'chill bro', start: 15*60+20, end: 16*60 },
+      { time: '4:00 – 6:00', label: 'Self-study', type: 'study', tag: '2 hrs', start: 16*60, end: 18*60 },
+      { time: '6:00 – 6:30', label: 'Workout', type: 'personal', tag: 'abs szn', start: 18*60, end: 18*60+30 },
+      { time: '6:30 – 7:30', label: 'Personal time', type: 'personal', tag: 'gaming / art / whatever', start: 18*60+30, end: 19*60+30 },
+      { time: '7:30 – 8:00', label: 'Dinner', type: 'routine', tag: '', start: 19*60+30, end: 20*60 },
+      { time: '8:00 – 9:00', label: 'Chandu time 💌', type: 'chandu', tag: '1 hr', start: 20*60, end: 21*60 },
+      { time: '9:00 – 10:30', label: 'Self-study', type: 'study', tag: '1.5 hrs', start: 21*60, end: 22*60+30 },
+      { time: '10:30 – 11:30', label: 'Wind down + personal time', type: 'personal', tag: 'no screens after 11', start: 22*60+30, end: 23*60+30 },
+      { time: '11:30', label: 'Sleep', type: 'sleep', tag: '7 hrs', start: 23*60+30, end: 24*60 },
+    ]
+  },
+  TUE: { study: 5.5, blocks: null },
+  WED: {
+    study: 3,
+    blocks: [
+      { time: '7:00 – 7:20', label: 'Morning routine (quick)', type: 'routine', tag: 'gotta move fast', start: 7*60, end: 7*60+20 },
+      { time: '7:20', label: 'Leave for school', type: 'routine', tag: 'Rapido — 45 min ride', start: 7*60+20, end: 8*60+15 },
+      { time: '8:15 – 3:20', label: 'Dummy school', type: 'coaching', tag: 'Darjeeling Public School', start: 8*60+15, end: 15*60+20 },
+      { time: '3:20 – 4:15', label: 'Travel back + food', type: 'routine', tag: '', start: 15*60+20, end: 16*60+15 },
+      { time: '4:15 – 6:15', label: 'Self-study', type: 'study', tag: '2 hrs — backlog first', start: 16*60+15, end: 18*60+15 },
+      { time: '6:15 – 7:00', label: 'Workout', type: 'personal', tag: 'abs szn', start: 18*60+15, end: 19*60 },
+      { time: '7:00 – 7:30', label: 'Dinner', type: 'routine', tag: '', start: 19*60, end: 19*60+30 },
+      { time: '7:30 – 9:30', label: 'Maths Tuition', type: 'tuition', tag: '2 hrs', start: 19*60+30, end: 21*60+30 },
+      { time: '9:30 – 10:00', label: 'Chandu time 💌', type: 'chandu', tag: 'shorter today', start: 21*60+30, end: 22*60 },
+      { time: '10:00 – 11:00', label: 'Self-study', type: 'study', tag: '1 hr', start: 22*60, end: 23*60 },
+      { time: '11:00 – 11:30', label: 'Wind down', type: 'personal', tag: '', start: 23*60, end: 23*60+30 },
+      { time: '11:30', label: 'Sleep', type: 'sleep', tag: '7 hrs', start: 23*60+30, end: 24*60 },
+    ]
+  },
+  THU: { study: 5.5, blocks: null },
+  FRI: { study: 5.5, blocks: null },
+  SAT: {
+    study: 8.5,
+    blocks: [
+      { time: '7:00 – 7:30', label: 'Morning routine', type: 'routine', tag: '', start: 7*60, end: 7*60+30 },
+      { time: '7:30 – 9:30', label: 'Self-study', type: 'study', tag: '2 hrs', start: 7*60+30, end: 9*60+30 },
+      { time: '9:30 – 10:00', label: 'Breakfast', type: 'routine', tag: '', start: 9*60+30, end: 10*60 },
+      { time: '10:00 – 1:00', label: 'Self-study', type: 'study', tag: '3 hrs — Saturday grind', start: 10*60, end: 13*60 },
+      { time: '1:00 – 2:00', label: 'Lunch + break', type: 'routine', tag: '', start: 13*60, end: 14*60 },
+      { time: '2:00 – 4:00', label: 'Self-study', type: 'study', tag: '2 hrs', start: 14*60, end: 16*60 },
+      { time: '4:00 – 5:00', label: 'Workout', type: 'personal', tag: 'abs szn', start: 16*60, end: 17*60 },
+      { time: '5:00 – 7:00', label: 'Personal time', type: 'personal', tag: 'gaming / art / music', start: 17*60, end: 19*60 },
+      { time: '7:00 – 8:00', label: 'Chandu time 💌', type: 'chandu', tag: '1 hr', start: 19*60, end: 20*60 },
+      { time: '8:00 – 8:30', label: 'Dinner', type: 'routine', tag: '', start: 20*60, end: 20*60+30 },
+      { time: '8:30 – 10:00', label: 'Light revision', type: 'study', tag: '1.5 hrs', start: 20*60+30, end: 22*60 },
+      { time: '10:00 – 11:30', label: 'Full chill', type: 'personal', tag: 'you earned it', start: 22*60, end: 23*60+30 },
+      { time: '11:30', label: 'Sleep', type: 'sleep', tag: '7 hrs', start: 23*60+30, end: 24*60 },
+    ]
+  },
+  SUN: {
+    study: 7,
+    blocks: [
+      { time: '7:00 – 7:30', label: 'Morning routine', type: 'routine', tag: '', start: 7*60, end: 7*60+30 },
+      { time: '7:30 – 9:00', label: 'Self-study', type: 'study', tag: '1.5 hrs', start: 7*60+30, end: 9*60 },
+      { time: '9:00 – 11:00', label: 'Maths Tuition', type: 'tuition', tag: '2 hrs', start: 9*60, end: 11*60 },
+      { time: '11:00 – 11:30', label: 'Break', type: 'routine', tag: '', start: 11*60, end: 11*60+30 },
+      { time: '11:30 – 1:30', label: 'Self-study', type: 'study', tag: '2 hrs', start: 11*60+30, end: 13*60+30 },
+      { time: '1:30 – 2:30', label: 'Lunch + break', type: 'routine', tag: '', start: 13*60+30, end: 14*60+30 },
+      { time: '2:30 – 4:30', label: 'Self-study', type: 'study', tag: '2 hrs', start: 14*60+30, end: 16*60+30 },
+      { time: '4:30 – 5:30', label: 'Workout', type: 'personal', tag: 'abs szn', start: 16*60+30, end: 17*60+30 },
+      { time: '5:30 – 6:30', label: 'Personal time', type: 'personal', tag: 'gaming / art', start: 17*60+30, end: 18*60+30 },
+      { time: '6:30 – 7:30', label: 'Chandu time 💌', type: 'chandu', tag: '1 hr', start: 18*60+30, end: 19*60+30 },
+      { time: '7:30 – 8:00', label: 'Dinner', type: 'routine', tag: '', start: 19*60+30, end: 20*60 },
+      { time: '8:00 – 9:30', label: 'Light revision', type: 'study', tag: '1.5 hrs', start: 20*60, end: 21*60+30 },
+      { time: '9:30 – 11:30', label: 'Full chill — recharge', type: 'personal', tag: 'new week tmr', start: 21*60+30, end: 23*60+30 },
+      { time: '11:30', label: 'Sleep', type: 'sleep', tag: '7 hrs', start: 23*60+30, end: 24*60 },
+    ]
+  },
+};
+ 
+// Copy Mon blocks to Tue, Thu, Fri
+schedule.TUE.blocks = schedule.MON.blocks;
+schedule.THU.blocks = schedule.MON.blocks;
+schedule.FRI.blocks = schedule.MON.blocks;
+ 
+const studyHoursMap = { SUN: 7, MON: 5.5, TUE: 5.5, WED: 3, THU: 5.5, FRI: 5.5, SAT: 8.5 };
+const weeklyOrder = ['MON','TUE','WED','THU','FRI','SAT','SUN'];
+ 
+let activeDay = null;
+ 
+function getCurrentMinutes() {
+  const now = new Date();
+  return now.getHours() * 60 + now.getMinutes();
+}
+ 
+function getTodayKey() {
+  const jsDay = new Date().getDay(); // 0=Sun
+  return days[jsDay];
+}
+ 
+function renderTabs() {
+  const tabsEl = document.getElementById('dayTabs');
+  tabsEl.innerHTML = '';
+  const today = getTodayKey();
+  weeklyOrder.forEach(d => {
+    const btn = document.createElement('button');
+    btn.className = 'day-tab' + (d === today ? ' today-marker' : '') + (d === activeDay ? ' active' : '');
+    btn.textContent = d === today ? d + ' ★' : d;
+    btn.onclick = () => { activeDay = d; renderAll(); };
+    tabsEl.appendChild(btn);
+  });
+}
+ 
+function renderSchedule() {
+  const data = schedule[activeDay];
+  document.getElementById('activeDayName').textContent = fullDays[days.indexOf(activeDay)] || activeDay;
+  document.getElementById('studyHours').textContent = data.study + ' HRS STUDY';
+ 
+  const now = getCurrentMinutes();
+  const isToday = activeDay === getTodayKey();
+  const timeline = document.getElementById('timeline');
+  timeline.innerHTML = '';
+ 
+  data.blocks.forEach((block, i) => {
+    const div = document.createElement('div');
+    const isCurrent = isToday && now >= block.start && now < block.end;
+    div.className = `block type-${block.type}${isCurrent ? ' type-current' : ''}`;
+    div.style.animationDelay = `${i * 0.04}s`;
+    div.innerHTML = `
+      <div class="block-time">${block.time}</div>
+      <div class="block-content">
+        <div class="block-label">${block.label}</div>
+        ${block.tag ? `<div class="block-tag">${block.tag}</div>` : ''}
+      </div>
+      ${isCurrent ? '<div class="current-indicator"></div>' : ''}
+    `;
+    timeline.appendChild(div);
+  });
+}
+ 
+function renderWeeklyStrip() {
+  const strip = document.getElementById('weeklyStrip');
+  strip.innerHTML = '';
+  const maxHours = 8.5;
+  weeklyOrder.forEach(d => {
+    const hrs = studyHoursMap[d];
+    const pct = (hrs / maxHours) * 100;
+    const isActive = d === activeDay;
+    strip.innerHTML += `
+      <div class="weekly-day" style="cursor:pointer" onclick="activeDay='${d}';renderAll()">
+        <div class="weekly-day-name" style="color:${isActive ? '#c8f135' : ''}">${d}</div>
+        <div class="weekly-bar">
+          <div class="weekly-bar-fill" style="height:${pct}%;background:${isActive ? '#c8f135' : '#333'}"></div>
+        </div>
+        <div class="weekly-hours" style="color:${isActive ? '#c8f135' : '#555'}">${hrs}h</div>
+      </div>
+    `;
+  });
+}
+ 
+function renderAll() {
+  renderTabs();
+  renderSchedule();
+  renderWeeklyStrip();
+}
+ 
+function updateClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2, '0');
+  const m = String(now.getMinutes()).padStart(2, '0');
+  const s = String(now.getSeconds()).padStart(2, '0');
+  document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+  const days2 = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('date-display').textContent = `${days2[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`;
+}
+ 
+// Init
+activeDay = getTodayKey();
+renderAll();
+updateClock();
+setInterval(updateClock, 1000);
+// Refresh current block highlight every minute
+setInterval(() => { renderSchedule(); renderWeeklyStrip(); }, 60000);
+</script>
 </body>
 </html>
