@@ -3,544 +3,652 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Soham's Schedule</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>LOCK IN — Soham's Schedule</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0a0a0a;
-    --card: #111111;
+    --surface: #111111;
     --border: #1e1e1e;
-    --accent: #c8f135;
-    --accent2: #f1a135;
+    --accent: #c8f542;
+    --accent2: #f5a623;
+    --red: #ff4444;
     --text: #e8e8e8;
     --muted: #555;
-    --study: #1a2e0a;
-    --study-border: #4a8a10;
-    --coaching: #0a1a2e;
-    --coaching-border: #1060a0;
-    --personal: #2a1a0a;
-    --personal-border: #a06010;
-    --chandu: #2a0a1a;
-    --chandu-border: #a01060;
-    --tuition: #1a0a2e;
-    --tuition-border: #6010a0;
-    --sleep: #141414;
-    --sleep-border: #333;
+    --dim: #2a2a2a;
   }
- 
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
- 
+
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'DM Mono', monospace;
     min-height: 100vh;
     overflow-x: hidden;
   }
- 
-  /* grain overlay */
+
+  /* Grain overlay */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
     pointer-events: none;
-    z-index: 999;
+    z-index: 1000;
     opacity: 0.4;
   }
- 
-  .header {
-    padding: 40px 24px 20px;
-    border-bottom: 1px solid var(--border);
-    position: relative;
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
   }
- 
+
+  /* Header */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 32px;
+    margin-bottom: 48px;
+    animation: fadeUp 0.6s ease both;
+  }
+
   .header-top {
     display: flex;
-    align-items: flex-end;
     justify-content: space-between;
+    align-items: flex-start;
     flex-wrap: wrap;
     gap: 12px;
   }
- 
+
   .title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(52px, 12vw, 88px);
+    font-size: clamp(52px, 12vw, 96px);
+    letter-spacing: 4px;
     line-height: 0.9;
-    letter-spacing: 2px;
     color: var(--accent);
+    text-shadow: 0 0 40px rgba(200, 245, 66, 0.15);
   }
- 
-  .title span {
-    color: var(--text);
-    opacity: 0.3;
-  }
- 
-  .live-clock {
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
+
+  .subtitle {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 14px;
     color: var(--muted);
-    text-align: right;
+    margin-top: 8px;
+    letter-spacing: 1px;
   }
- 
-  .live-time {
-    font-size: 28px;
-    font-weight: 500;
+
+  .badge {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: var(--dim);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 6px 12px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .goal-bar {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .goal-bar span {
     color: var(--accent);
-    display: block;
-    line-height: 1;
+    font-size: 13px;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 3px;
   }
- 
-  .day-tabs {
+
+  .goal-bar::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  /* Day tabs */
+  .tabs {
     display: flex;
     gap: 4px;
-    padding: 16px 24px;
-    overflow-x: auto;
-    border-bottom: 1px solid var(--border);
-    scrollbar-width: none;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.1s ease both;
   }
-  .day-tabs::-webkit-scrollbar { display: none; }
- 
-  .day-tab {
+
+  .tab {
     font-family: 'DM Mono', monospace;
     font-size: 11px;
-    font-weight: 500;
-    padding: 8px 14px;
-    border-radius: 4px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 8px 16px;
     border: 1px solid var(--border);
     background: transparent;
     color: var(--muted);
     cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.15s;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
- 
-  .day-tab:hover { color: var(--text); border-color: #333; }
-  .day-tab.active {
-    background: var(--accent);
-    color: #000;
-    border-color: var(--accent);
-    font-weight: 700;
-  }
-  .day-tab.today-marker {
-    border-color: var(--accent2);
-    color: var(--accent2);
-  }
-  .day-tab.today-marker.active {
-    background: var(--accent2);
-    color: #000;
-    border-color: var(--accent2);
-  }
- 
-  .schedule-container {
-    padding: 24px;
-    max-width: 640px;
-    margin: 0 auto;
-  }
- 
-  .day-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
- 
-  .day-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 36px;
-    letter-spacing: 2px;
-    color: var(--text);
-  }
- 
-  .day-stats {
-    display: flex;
-    gap: 12px;
-  }
- 
-  .stat-pill {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    letter-spacing: 0.5px;
-  }
- 
-  .stat-pill.study { border-color: var(--study-border); color: var(--accent); }
- 
-  .timeline {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
- 
-  .block {
-    display: flex;
-    gap: 16px;
-    align-items: stretch;
-    padding: 12px 14px;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    background: var(--card);
-    position: relative;
-    transition: all 0.15s;
-    animation: slideIn 0.3s ease both;
-  }
- 
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateX(-8px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
- 
-  .block:hover { border-color: #2a2a2a; background: #161616; }
- 
-  .block.type-study { background: var(--study); border-color: var(--study-border); }
-  .block.type-coaching { background: var(--coaching); border-color: var(--coaching-border); }
-  .block.type-personal { background: var(--personal); border-color: var(--personal-border); }
-  .block.type-chandu { background: var(--chandu); border-color: var(--chandu-border); }
-  .block.type-tuition { background: var(--tuition); border-color: var(--tuition-border); }
-  .block.type-current {
-    border-color: var(--accent) !important;
-    box-shadow: 0 0 0 1px var(--accent), 0 0 20px rgba(200, 241, 53, 0.08);
-  }
- 
-  .block-time {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    white-space: nowrap;
-    min-width: 90px;
-    padding-top: 2px;
-  }
- 
-  .block-content { flex: 1; }
- 
-  .block-label {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text);
-    line-height: 1.3;
-  }
- 
-  .block-tag {
-    display: inline-block;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.5px;
-    margin-top: 3px;
-  }
- 
-  .current-indicator {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 8px var(--accent);
-    animation: pulse 1.5s infinite;
-  }
- 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: translateY(-50%) scale(1); }
-    50% { opacity: 0.5; transform: translateY(-50%) scale(1.5); }
-  }
- 
-  .legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    padding: 20px 24px;
-    border-top: 1px solid var(--border);
-    margin-top: 8px;
-  }
- 
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-  }
- 
-  .legend-dot {
-    width: 8px;
-    height: 8px;
+    transition: all 0.2s;
     border-radius: 2px;
   }
- 
-  .weekly-strip {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-    padding: 16px 24px;
-    border-top: 1px solid var(--border);
+
+  .tab:hover { border-color: var(--accent); color: var(--accent); }
+  .tab.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 500; }
+  .tab.rest { }
+  .tab.active.rest { background: var(--accent2); border-color: var(--accent2); }
+
+  /* Schedule grid */
+  .schedule {
+    display: none;
+    animation: fadeUp 0.3s ease both;
   }
- 
-  .weekly-day {
-    text-align: center;
-    font-family: 'DM Mono', monospace;
+  .schedule.visible { display: block; }
+
+  .day-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .day-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    letter-spacing: 3px;
+    color: var(--text);
+  }
+
+  .day-type {
     font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
     color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 3px 8px;
+    border-radius: 2px;
   }
- 
-  .weekly-day-name { margin-bottom: 4px; letter-spacing: 0.5px; }
- 
-  .weekly-bar {
-    height: 40px;
+
+  .day-type.aakash { color: var(--accent); border-color: rgba(200, 245, 66, 0.3); }
+  .day-type.school { color: var(--accent2); border-color: rgba(245, 166, 35, 0.3); }
+  .day-type.free { color: #888; }
+
+  .blocks {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .block {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px;
+    border: 1px solid var(--border);
     border-radius: 3px;
-    background: var(--border);
+    background: var(--surface);
+    transition: border-color 0.2s;
     position: relative;
     overflow: hidden;
   }
- 
-  .weekly-bar-fill {
+
+  .block::before {
+    content: '';
     position: absolute;
-    bottom: 0;
     left: 0;
-    right: 0;
-    background: var(--accent);
+    top: 0;
+    bottom: 0;
+    width: 3px;
+  }
+
+  .block:hover { border-color: #333; }
+
+  .block.study::before { background: var(--accent); }
+  .block.aakash-class::before { background: #4a9eff; }
+  .block.run::before { background: #ff6b35; }
+  .block.tuition::before { background: var(--accent2); }
+  .block.school-class::before { background: var(--accent2); }
+  .block.sleep::before { background: #8b5cf6; }
+  .block.break::before { background: var(--dim); }
+  .block.meals::before { background: #22c55e; }
+  .block.phone::before { background: #ef4444; }
+  .block.workout::before { background: #f97316; }
+
+  .block-time {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+
+  .block-label {
+    font-size: 13px;
+    color: var(--text);
+    letter-spacing: 0.5px;
+  }
+
+  .block-label small {
+    display: block;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+    letter-spacing: 1px;
+  }
+
+  .block-tag {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 7px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .tag-study { background: rgba(200, 245, 66, 0.1); color: var(--accent); }
+  .tag-fixed { background: rgba(74, 158, 255, 0.1); color: #4a9eff; }
+  .tag-body { background: rgba(249, 115, 22, 0.1); color: #f97316; }
+  .tag-rest { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+  .tag-flex { background: rgba(85, 85, 85, 0.3); color: var(--muted); }
+  .tag-tuition { background: rgba(245, 166, 35, 0.1); color: var(--accent2); }
+
+  /* Rules section */
+  .rules-section {
+    margin-top: 48px;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+  }
+
+  .rule-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 18px 20px;
     border-radius: 3px;
-    transition: height 0.5s ease;
+    position: relative;
+    overflow: hidden;
   }
- 
-  .weekly-hours {
-    margin-top: 4px;
+
+  .rule-card::after {
+    content: attr(data-num);
+    position: absolute;
+    right: 16px;
+    top: 12px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    color: var(--dim);
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+
+  .rule-title {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
     color: var(--accent);
-    font-weight: 500;
+    margin-bottom: 8px;
   }
- 
-  .hidden { display: none; }
+
+  .rule-desc {
+    font-size: 12px;
+    color: #888;
+    line-height: 1.7;
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+  }
+
+  /* Stats bar */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px;
+    margin-bottom: 40px;
+    animation: fadeUp 0.6s 0.15s ease both;
+  }
+
+  .stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 16px;
+    border-radius: 3px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    .block { grid-template-columns: 85px 1fr; }
+    .block-tag { display: none; }
+  }
 </style>
 </head>
 <body>
- 
-<div class="header">
-  <div class="header-top">
-    <div class="title">DAILY<br><span>GRIND</span></div>
-    <div class="live-clock">
-      <span class="live-time" id="clock">00:00</span>
-      <span id="date-display">loading...</span>
+<div class="container">
+
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="title">LOCK IN</div>
+        <div class="subtitle">Soham's Master Schedule — Class 11 Era</div>
+      </div>
+      <div class="badge">NEET 2028 // AIIMS</div>
+    </div>
+    <div class="goal-bar">
+      <span>TARGET</span> All India Institute of Medical Sciences
     </div>
   </div>
-</div>
- 
-<div class="day-tabs" id="dayTabs"></div>
- 
-<div class="schedule-container">
-  <div class="day-header">
-    <div class="day-name" id="activeDayName">MONDAY</div>
-    <div class="day-stats">
-      <div class="stat-pill study" id="studyHours">5.5 HRS STUDY</div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num">6+</div>
+      <div class="stat-label">Study hrs/day</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">5km</div>
+      <div class="stat-label">Run target</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">7hrs</div>
+      <div class="stat-label">Sleep target</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">711</div>
+      <div class="stat-label">Days to NEET</div>
     </div>
   </div>
-  <div class="timeline" id="timeline"></div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="showDay('mon')">MON</button>
+    <button class="tab" onclick="showDay('tue')">TUE</button>
+    <button class="tab" onclick="showDay('wed')">WED</button>
+    <button class="tab" onclick="showDay('thu')">THU</button>
+    <button class="tab" onclick="showDay('fri')">FRI</button>
+    <button class="tab rest" onclick="showDay('sat')">SAT</button>
+    <button class="tab rest" onclick="showDay('sun')">SUN</button>
+  </div>
+
+  <!-- MONDAY -->
+  <div class="schedule visible" id="day-mon">
+    <div class="day-header">
+      <div class="day-name">Monday</div>
+      <div class="day-type aakash">Aakash Day</div>
+    </div>
+    <div class="blocks">
+      <div class="block sleep">
+        <div class="block-time">05:00</div>
+        <div class="block-label">Wake Up<small>Hydrate first, no phone</small></div>
+        <div class="block-tag tag-rest">Rise</div>
+      </div>
+      <div class="block study">
+        <div class="block-time">05:15 – 09:30</div>
+        <div class="block-label">Morning Study Block<small>Prime brain time — Physics / Bio / Chem theory</small></div>
+        <div class="block-tag tag-study">4h 15m</div>
+      </div>
+      <div class="block break">
+        <div class="block-time">09:30 – 10:00</div>
+        <div class="block-label">Get Ready + Light Breakfast<small>Puffed rice, prep bag</small></div>
+        <div class="block-tag tag-flex">Prep</div>
+      </div>
+      <div class="block aakash-class">
+        <div class="block-time">10:40 – 15:20</div>
+        <div class="block-label">Aakash Institute<small>Be present, take notes, ask doubts</small></div>
+        <div class="block-tag tag-fixed">4h 40m</div>
+      </div>
+      <div class="block meals">
+        <div class="block-time">15:30</div>
+        <div class="block-label">Lunch<small>Eat properly, rest 20 mins</small></div>
+        <div class="block-tag tag-flex">Fuel</div>
+      </div>
+      <div class="block study">
+        <div class="block-time">16:30 – 18:30</div>
+        <div class="block-label">Revision + DPP<small>Solve today's Aakash DPPs while fresh</small></div>
+        <div class="block-tag tag-study">2h</div>
+      </div>
+      <div class="block run">
+        <div class="block-time">18:30 – 19:30</div>
+        <div class="block-label">Run + Workout<small>Build to 5km. Bodyweight after run.</small></div>
+        <div class="block-tag tag-body">1h</div>
+      </div>
+      <div class="block meals">
+        <div class="block-time">20:30</div>
+        <div class="block-label">Dinner + Recovery<small>Eat, shower, decompress</small></div>
+        <div class="block-tag tag-flex">Reset</div>
+      </div>
+      <div class="block study">
+        <div class="block-time">21:15 – 23:30</div>
+        <div class="block-label">Night Study Block<small>NCERT reading, weak topics, notes</small></div>
+        <div class="block-tag tag-study">2h 15m</div>
+      </div>
+      <div class="block phone">
+        <div class="block-time">23:30 – 00:00</div>
+        <div class="block-label">Wind Down<small>Max 30 min phone. Then lights out.</small></div>
+        <div class="block-tag tag-rest">Cap</div>
+      </div>
+      <div class="block sleep">
+        <div class="block-time">00:00</div>
+        <div class="block-label">Sleep</div>
+        <div class="block-tag tag-rest">7hrs</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TUESDAY (same as Monday) -->
+  <div class="schedule" id="day-tue">
+    <div class="day-header">
+      <div class="day-name">Tuesday</div>
+      <div class="day-type aakash">Aakash Day</div>
+    </div>
+    <div class="blocks">
+      <div class="block sleep"><div class="block-time">05:00</div><div class="block-label">Wake Up<small>Hydrate first, no phone</small></div><div class="block-tag tag-rest">Rise</div></div>
+      <div class="block study"><div class="block-time">05:15 – 09:30</div><div class="block-label">Morning Study Block<small>Prime brain time — yesterday's revision + new concepts</small></div><div class="block-tag tag-study">4h 15m</div></div>
+      <div class="block break"><div class="block-time">09:30 – 10:00</div><div class="block-label">Get Ready + Light Breakfast</div><div class="block-tag tag-flex">Prep</div></div>
+      <div class="block aakash-class"><div class="block-time">10:40 – 15:20</div><div class="block-label">Aakash Institute<small>Be present, take notes, ask doubts</small></div><div class="block-tag tag-fixed">4h 40m</div></div>
+      <div class="block meals"><div class="block-time">15:30</div><div class="block-label">Lunch<small>Eat properly, rest 20 mins</small></div><div class="block-tag tag-flex">Fuel</div></div>
+      <div class="block study"><div class="block-time">17:00 – 18:30</div><div class="block-label">Revision + DPP<small>Aakash DPPs + self-test</small></div><div class="block-tag tag-study">1h 30m</div></div>
+      <div class="block run"><div class="block-time">18:30 – 19:30</div><div class="block-label">Run + Workout<small>Build to 5km. Bodyweight after.</small></div><div class="block-tag tag-body">1h</div></div>
+      <div class="block meals"><div class="block-time">20:30</div><div class="block-label">Dinner + Recovery</div><div class="block-tag tag-flex">Reset</div></div>
+      <div class="block study"><div class="block-time">21:15 – 23:30</div><div class="block-label">Night Study Block<small>NCERT + weak areas</small></div><div class="block-tag tag-study">2h 15m</div></div>
+      <div class="block phone"><div class="block-time">23:30 – 00:00</div><div class="block-label">Wind Down<small>30 min phone cap. Lights out.</small></div><div class="block-tag tag-rest">Cap</div></div>
+      <div class="block sleep"><div class="block-time">00:00</div><div class="block-label">Sleep</div><div class="block-tag tag-rest">7hrs</div></div>
+    </div>
+  </div>
+
+  <!-- WEDNESDAY -->
+  <div class="schedule" id="day-wed">
+    <div class="day-header">
+      <div class="day-name">Wednesday</div>
+      <div class="day-type school">School + Tuition</div>
+    </div>
+    <div class="blocks">
+      <div class="block sleep"><div class="block-time">06:00</div><div class="block-label">Wake Up (School days)<small>Earlier start, no Aakash today</small></div><div class="block-tag tag-rest">Rise</div></div>
+      <div class="block study"><div class="block-time">06:15 – 07:15</div><div class="block-label">Quick Morning Study<small>1 hour only — light revision</small></div><div class="block-tag tag-study">1h</div></div>
+      <div class="block break"><div class="block-time">07:15 – 07:45</div><div class="block-label">Get Ready + Leave<small>45 min commute to school</small></div><div class="block-tag tag-flex">Prep</div></div>
+      <div class="block school-class"><div class="block-time">08:15 – 15:20</div><div class="block-label">School<small>2 weeks/month. Pay attention in Bio/Chem/Physics</small></div><div class="block-tag tag-fixed">~7h</div></div>
+      <div class="block meals"><div class="block-time">~16:00</div><div class="block-label">Home + Lunch</div><div class="block-tag tag-flex">Fuel</div></div>
+      <div class="block study"><div class="block-time">16:30 – 19:00</div><div class="block-label">Self Study Block<small>Catch up + Aakash notes review</small></div><div class="block-tag tag-study">2h 30m</div></div>
+      <div class="block tuition"><div class="block-time">19:30 – 21:30</div><div class="block-label">Maths Tuition<small>Be sharp, solve everything in class</small></div><div class="block-tag tag-tuition">2h</div></div>
+      <div class="block run"><div class="block-time">21:45 – 22:15</div><div class="block-label">Short Run / Walk<small>Lighter on school+tuition days — 2-3km fine</small></div><div class="block-tag tag-body">30m</div></div>
+      <div class="block meals"><div class="block-time">22:15 – 22:45</div><div class="block-label">Dinner + Shower</div><div class="block-tag tag-flex">Reset</div></div>
+      <div class="block phone"><div class="block-time">22:45 – 23:15</div><div class="block-label">Wind Down<small>30 min cap, sleep before 23:30</small></div><div class="block-tag tag-rest">Cap</div></div>
+      <div class="block sleep"><div class="block-time">23:30</div><div class="block-label">Sleep</div><div class="block-tag tag-rest">7hrs</div></div>
+    </div>
+  </div>
+
+  <!-- THURSDAY (same as Mon/Tue) -->
+  <div class="schedule" id="day-thu">
+    <div class="day-header">
+      <div class="day-name">Thursday</div>
+      <div class="day-type aakash">Aakash Day</div>
+    </div>
+    <div class="blocks">
+      <div class="block sleep"><div class="block-time">06:30</div><div class="block-label">Wake Up<small>Hydrate first, no phone</small></div><div class="block-tag tag-rest">Rise</div></div>
+      <div class="block study"><div class="block-time">06:45 – 09:30</div><div class="block-label">Morning Study Block<small>Maths problems / theory deep dive</small></div><div class="block-tag tag-study">2h 45m</div></div>
+      <div class="block break"><div class="block-time">09:30 – 10:00</div><div class="block-label">Get Ready + Light Breakfast</div><div class="block-tag tag-flex">Prep</div></div>
+      <div class="block aakash-class"><div class="block-time">10:40 – 15:20</div><div class="block-label">Aakash Institute</div><div class="block-tag tag-fixed">4h 40m</div></div>
+      <div class="block meals"><div class="block-time">15:30</div><div class="block-label">Lunch</div><div class="block-tag tag-flex">Fuel</div></div>
+      <div class="block study"><div class="block-time">16:30 – 18:30</div><div class="block-label">Revision + DPP</div><div class="block-tag tag-study">2h</div></div>
+      <div class="block run"><div class="block-time">18:30 – 19:30</div><div class="block-label">Run + Workout</div><div class="block-tag tag-body">1h</div></div>
+      <div class="block meals"><div class="block-time">19:45 – 20:15</div><div class="block-label">Dinner + Recovery</div><div class="block-tag tag-flex">Reset</div></div>
+      <div class="block study"><div class="block-time">20:30 – 23:00</div><div class="block-label">Night Study Block<small>Mock questions + formula revision</small></div><div class="block-tag tag-study">2h 30m</div></div>
+      <div class="block phone"><div class="block-time">23:00 – 23:30</div><div class="block-label">Wind Down</div><div class="block-tag tag-rest">Cap</div></div>
+      <div class="block sleep"><div class="block-time">23:30</div><div class="block-label">Sleep</div><div class="block-tag tag-rest">7hrs</div></div>
+    </div>
+  </div>
+
+  <!-- FRIDAY -->
+  <div class="schedule" id="day-fri">
+    <div class="day-header">
+      <div class="day-name">Friday</div>
+      <div class="day-type aakash">Aakash Day</div>
+    </div>
+    <div class="blocks">
+      <div class="block sleep"><div class="block-time">06:30</div><div class="block-label">Wake Up</div><div class="block-tag tag-rest">Rise</div></div>
+      <div class="block study"><div class="block-time">06:45 – 09:30</div><div class="block-label">Morning Study Block<small>Week review — what's weak, fix it today</small></div><div class="block-tag tag-study">2h 45m</div></div>
+      <div class="block break"><div class="block-time">09:30 – 10:00</div><div class="block-label">Get Ready + Light Breakfast</div><div class="block-tag tag-flex">Prep</div></div>
+      <div class="block aakash-class"><div class="block-time">10:40 – 15:20</div><div class="block-label">Aakash Institute</div><div class="block-tag tag-fixed">4h 40m</div></div>
+      <div class="block meals"><div class="block-time">15:30</div><div class="block-label">Lunch</div><div class="block-tag tag-flex">Fuel</div></div>
+      <div class="block study"><div class="block-time">16:30 – 18:30</div><div class="block-label">Revision + DPP</div><div class="block-tag tag-study">2h</div></div>
+      <div class="block run"><div class="block-time">18:30 – 19:30</div><div class="block-label">Run + Workout</div><div class="block-tag tag-body">1h</div></div>
+      <div class="block meals"><div class="block-time">19:45 – 20:15</div><div class="block-label">Dinner + Recovery</div><div class="block-tag tag-flex">Reset</div></div>
+      <div class="block study"><div class="block-time">20:30 – 23:00</div><div class="block-label">Night Study Block<small>End strong — no coasting on Friday</small></div><div class="block-tag tag-study">2h 30m</div></div>
+      <div class="block phone"><div class="block-time">23:00 – 23:30</div><div class="block-label">Wind Down</div><div class="block-tag tag-rest">Cap</div></div>
+      <div class="block sleep"><div class="block-time">23:30</div><div class="block-label">Sleep</div><div class="block-tag tag-rest">7hrs</div></div>
+    </div>
+  </div>
+
+  <!-- SATURDAY -->
+  <div class="schedule" id="day-sat">
+    <div class="day-header">
+      <div class="day-name">Saturday</div>
+      <div class="day-type free">Full Study Day</div>
+    </div>
+    <div class="blocks">
+      <div class="block sleep"><div class="block-time">06:30</div><div class="block-label">Wake Up<small>No Aakash — own the whole day</small></div><div class="block-tag tag-rest">Rise</div></div>
+      <div class="block study"><div class="block-time">07:00 – 10:00</div><div class="block-label">Deep Study Block 1<small>Hardest subject of the week — no distractions</small></div><div class="block-tag tag-study">3h</div></div>
+      <div class="block break"><div class="block-time">10:00 – 10:30</div><div class="block-label">Break + Breakfast</div><div class="block-tag tag-flex">Break</div></div>
+      <div class="block study"><div class="block-time">10:30 – 13:00</div><div class="block-label">Deep Study Block 2<small>Second subject — problems and practice</small></div><div class="block-tag tag-study">2h 30m</div></div>
+      <div class="block meals"><div class="block-time">13:00 – 14:00</div><div class="block-label">Lunch + Rest</div><div class="block-tag tag-flex">Fuel</div></div>
+      <div class="block study"><div class="block-time">14:00 – 16:30</div><div class="block-label">Deep Study Block 3<small>Third subject or mock test attempt</small></div><div class="block-tag tag-study">2h 30m</div></div>
+      <div class="block run"><div class="block-time">16:30 – 17:30</div><div class="block-label">Run + Full Workout<small>Longer session on free days</small></div><div class="block-tag tag-body">1h</div></div>
+      <div class="block break"><div class="block-time">17:30 – 18:30</div><div class="block-label">Free Time / Music / Drawing<small>Actual decompress — earned it</small></div><div class="block-tag tag-flex">You time</div></div>
+      <div class="block study"><div class="block-time">18:30 – 21:00</div><div class="block-label">Evening Study Block<small>Weekly wrap up — notes, formulas, weak points</small></div><div class="block-tag tag-study">2h 30m</div></div>
+      <div class="block meals"><div class="block-time">21:00 – 21:30</div><div class="block-label">Dinner</div><div class="block-tag tag-flex">Fuel</div></div>
+      <div class="block phone"><div class="block-time">21:30 – 23:00</div><div class="block-label">Wind Down<small>Slightly longer — you put in the work today</small></div><div class="block-tag tag-rest">Ease</div></div>
+      <div class="block sleep"><div class="block-time">23:30</div><div class="block-label">Sleep</div><div class="block-tag tag-rest">7hrs</div></div>
+    </div>
+  </div>
+
+  <!-- SUNDAY -->
+  <div class="schedule" id="day-sun">
+    <div class="day-header">
+      <div class="day-name">Sunday</div>
+      <div class="day-type free">Tuition + Study</div>
+    </div>
+    <div class="blocks">
+      <div class="block sleep"><div class="block-time">07:00</div><div class="block-label">Wake Up<small>Slight buffer — weekly recovery</small></div><div class="block-tag tag-rest">Rise</div></div>
+      <div class="block study"><div class="block-time">07:30 – 09:30</div><div class="block-label">Morning Study Block<small>Light — revision only, no new concepts</small></div><div class="block-tag tag-study">2h</div></div>
+      <div class="block break"><div class="block-time">09:30 – 10:00</div><div class="block-label">Get Ready + Order Breakfast</div><div class="block-tag tag-flex">Prep</div></div>
+      <div class="block tuition"><div class="block-time">10:00 – 12:30</div><div class="block-label">Maths Tuition<small>Be sharp, solve actively — no passive listening</small></div><div class="block-tag tag-tuition">2h 30m</div></div>
+      <div class="block meals"><div class="block-time">12:30 – 13:30</div><div class="block-label">Order Lunch + Rest</div><div class="block-tag tag-flex">Fuel</div></div>
+      <div class="block study"><div class="block-time">13:30 – 16:30</div><div class="block-label">Afternoon Study Block<small>Maths practice — apply what you learned today</small></div><div class="block-tag tag-study">3h</div></div>
+      <div class="block run"><div class="block-time">16:30 – 17:30</div><div class="block-label">Run + Workout</div><div class="block-tag tag-body">1h</div></div>
+      <div class="block break"><div class="block-time">17:30 – 18:30</div><div class="block-label">Free Time<small>Draw, sing, game — proper break</small></div><div class="block-tag tag-flex">You time</div></div>
+      <div class="block study"><div class="block-time">18:30 – 21:00</div><div class="block-label">Weekly Review<small>What did you learn this week? What's still weak?</small></div><div class="block-tag tag-study">2h 30m</div></div>
+      <div class="block meals"><div class="block-time">21:00 – 21:30</div><div class="block-label">Order Dinner</div><div class="block-tag tag-flex">Fuel</div></div>
+      <div class="block phone"><div class="block-time">21:30 – 23:00</div><div class="block-label">Wind Down<small>Plan next week mentally</small></div><div class="block-tag tag-rest">Ease</div></div>
+      <div class="block sleep"><div class="block-time">23:30</div><div class="block-label">Sleep</div><div class="block-tag tag-rest">7hrs</div></div>
+    </div>
+  </div>
+
+  <!-- Rules -->
+  <div class="rules-section">
+    <div class="section-title">Lock In Rules</div>
+    <div class="rules-grid">
+      <div class="rule-card" data-num="01">
+        <div class="rule-title">Phone Discipline</div>
+        <div class="rule-desc">Instagram max 30 min/day. No reels during study blocks. Phone in other room while studying. Wind down only after all study is done.</div>
+      </div>
+      <div class="rule-card" data-num="02">
+        <div class="rule-title">Morning = Brain Time</div>
+        <div class="rule-desc">First thing after waking is water, not phone. Morning blocks are sacred — no compromises. Your brain is sharpest then, don't waste it.</div>
+      </div>
+      <div class="rule-card" data-num="03">
+        <div class="rule-title">Run is Non-Negotiable</div>
+        <div class="rule-desc">Start at whatever distance you can. Build to 5km over 2-3 months. Missing run = missing the glowup. Body and mind are connected.</div>
+      </div>
+      <div class="rule-card" data-num="04">
+        <div class="rule-title">Green / Yellow / Red Days</div>
+        <div class="rule-desc">Green = full schedule hit. Yellow = 70%+ done. Red = slacked. Track it. 2 reds in a row = mandatory accountability check.</div>
+      </div>
+      <div class="rule-card" data-num="05">
+        <div class="rule-title">DPPs Same Day</div>
+        <div class="rule-desc">Aakash DPPs solved the same day as the class. Never let them pile up. Backlog is where motivation goes to die.</div>
+      </div>
+      <div class="rule-card" data-num="06">
+        <div class="rule-title">Disappear Mode</div>
+        <div class="rule-desc">Next Instagram post = AIIMS entrance. Nothing in between. The world doesn't need to know what you're doing. Let the results speak.</div>
+      </div>
+    </div>
+  </div>
+
 </div>
- 
-<div class="weekly-strip" id="weeklyStrip"></div>
- 
-<div class="legend">
-  <div class="legend-item"><div class="legend-dot" style="background:#4a8a10"></div> Study</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#1060a0"></div> Coaching</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#6010a0"></div> Tuition</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#a06010"></div> Personal</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#a01060"></div> Chandu</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#333"></div> Routine</div>
-</div>
- 
+
 <script>
-const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
-const fullDays = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
- 
-const schedule = {
-  MON: {
-    study: 5.5,
-    blocks: [
-      { time: '7:00 – 7:30', label: 'Morning routine', type: 'routine', tag: 'wake up / freshen up', start: 7*60, end: 7*60+30 },
-      { time: '7:30 – 9:30', label: 'Self-study', type: 'study', tag: '2 hrs', start: 7*60+30, end: 9*60+30 },
-      { time: '9:30 – 10:20', label: 'Breakfast + travel to coaching', type: 'routine', tag: 'walking distance', start: 9*60+30, end: 10*60+20 },
-      { time: '10:40 – 3:20', label: 'Aakash Coaching', type: 'coaching', tag: 'Physics / Chem / Bio', start: 10*60+40, end: 15*60+20 },
-      { time: '3:20 – 4:00', label: 'Break / decompress', type: 'personal', tag: 'chill bro', start: 15*60+20, end: 16*60 },
-      { time: '4:00 – 6:00', label: 'Self-study', type: 'study', tag: '2 hrs', start: 16*60, end: 18*60 },
-      { time: '6:00 – 6:30', label: 'Workout', type: 'personal', tag: 'abs szn', start: 18*60, end: 18*60+30 },
-      { time: '6:30 – 7:30', label: 'Personal time', type: 'personal', tag: 'gaming / art / whatever', start: 18*60+30, end: 19*60+30 },
-      { time: '7:30 – 8:00', label: 'Dinner', type: 'routine', tag: '', start: 19*60+30, end: 20*60 },
-      { time: '8:00 – 9:00', label: 'Chandu time 💌', type: 'chandu', tag: '1 hr', start: 20*60, end: 21*60 },
-      { time: '9:00 – 10:30', label: 'Self-study', type: 'study', tag: '1.5 hrs', start: 21*60, end: 22*60+30 },
-      { time: '10:30 – 11:30', label: 'Wind down + personal time', type: 'personal', tag: 'no screens after 11', start: 22*60+30, end: 23*60+30 },
-      { time: '11:30', label: 'Sleep', type: 'sleep', tag: '7 hrs', start: 23*60+30, end: 24*60 },
-    ]
-  },
-  TUE: { study: 5.5, blocks: null },
-  WED: {
-    study: 3,
-    blocks: [
-      { time: '7:00 – 7:20', label: 'Morning routine (quick)', type: 'routine', tag: 'gotta move fast', start: 7*60, end: 7*60+20 },
-      { time: '7:20', label: 'Leave for school', type: 'routine', tag: 'Rapido — 45 min ride', start: 7*60+20, end: 8*60+15 },
-      { time: '8:15 – 3:20', label: 'Dummy school', type: 'coaching', tag: 'Darjeeling Public School', start: 8*60+15, end: 15*60+20 },
-      { time: '3:20 – 4:15', label: 'Travel back + food', type: 'routine', tag: '', start: 15*60+20, end: 16*60+15 },
-      { time: '4:15 – 6:15', label: 'Self-study', type: 'study', tag: '2 hrs — backlog first', start: 16*60+15, end: 18*60+15 },
-      { time: '6:15 – 7:00', label: 'Workout', type: 'personal', tag: 'abs szn', start: 18*60+15, end: 19*60 },
-      { time: '7:00 – 7:30', label: 'Dinner', type: 'routine', tag: '', start: 19*60, end: 19*60+30 },
-      { time: '7:30 – 9:30', label: 'Maths Tuition', type: 'tuition', tag: '2 hrs', start: 19*60+30, end: 21*60+30 },
-      { time: '9:30 – 10:00', label: 'Chandu time 💌', type: 'chandu', tag: 'shorter today', start: 21*60+30, end: 22*60 },
-      { time: '10:00 – 11:00', label: 'Self-study', type: 'study', tag: '1 hr', start: 22*60, end: 23*60 },
-      { time: '11:00 – 11:30', label: 'Wind down', type: 'personal', tag: '', start: 23*60, end: 23*60+30 },
-      { time: '11:30', label: 'Sleep', type: 'sleep', tag: '7 hrs', start: 23*60+30, end: 24*60 },
-    ]
-  },
-  THU: { study: 5.5, blocks: null },
-  FRI: { study: 5.5, blocks: null },
-  SAT: {
-    study: 8.5,
-    blocks: [
-      { time: '7:00 – 7:30', label: 'Morning routine', type: 'routine', tag: '', start: 7*60, end: 7*60+30 },
-      { time: '7:30 – 9:30', label: 'Self-study', type: 'study', tag: '2 hrs', start: 7*60+30, end: 9*60+30 },
-      { time: '9:30 – 10:00', label: 'Breakfast', type: 'routine', tag: '', start: 9*60+30, end: 10*60 },
-      { time: '10:00 – 1:00', label: 'Self-study', type: 'study', tag: '3 hrs — Saturday grind', start: 10*60, end: 13*60 },
-      { time: '1:00 – 2:00', label: 'Lunch + break', type: 'routine', tag: '', start: 13*60, end: 14*60 },
-      { time: '2:00 – 4:00', label: 'Self-study', type: 'study', tag: '2 hrs', start: 14*60, end: 16*60 },
-      { time: '4:00 – 5:00', label: 'Workout', type: 'personal', tag: 'abs szn', start: 16*60, end: 17*60 },
-      { time: '5:00 – 7:00', label: 'Personal time', type: 'personal', tag: 'gaming / art / music', start: 17*60, end: 19*60 },
-      { time: '7:00 – 8:00', label: 'Chandu time 💌', type: 'chandu', tag: '1 hr', start: 19*60, end: 20*60 },
-      { time: '8:00 – 8:30', label: 'Dinner', type: 'routine', tag: '', start: 20*60, end: 20*60+30 },
-      { time: '8:30 – 10:00', label: 'Light revision', type: 'study', tag: '1.5 hrs', start: 20*60+30, end: 22*60 },
-      { time: '10:00 – 11:30', label: 'Full chill', type: 'personal', tag: 'you earned it', start: 22*60, end: 23*60+30 },
-      { time: '11:30', label: 'Sleep', type: 'sleep', tag: '7 hrs', start: 23*60+30, end: 24*60 },
-    ]
-  },
-  SUN: {
-    study: 7,
-    blocks: [
-      { time: '7:00 – 7:30', label: 'Morning routine', type: 'routine', tag: '', start: 7*60, end: 7*60+30 },
-      { time: '7:30 – 9:00', label: 'Self-study', type: 'study', tag: '1.5 hrs', start: 7*60+30, end: 9*60 },
-      { time: '9:00 – 11:00', label: 'Maths Tuition', type: 'tuition', tag: '2 hrs', start: 9*60, end: 11*60 },
-      { time: '11:00 – 11:30', label: 'Break', type: 'routine', tag: '', start: 11*60, end: 11*60+30 },
-      { time: '11:30 – 1:30', label: 'Self-study', type: 'study', tag: '2 hrs', start: 11*60+30, end: 13*60+30 },
-      { time: '1:30 – 2:30', label: 'Lunch + break', type: 'routine', tag: '', start: 13*60+30, end: 14*60+30 },
-      { time: '2:30 – 4:30', label: 'Self-study', type: 'study', tag: '2 hrs', start: 14*60+30, end: 16*60+30 },
-      { time: '4:30 – 5:30', label: 'Workout', type: 'personal', tag: 'abs szn', start: 16*60+30, end: 17*60+30 },
-      { time: '5:30 – 6:30', label: 'Personal time', type: 'personal', tag: 'gaming / art', start: 17*60+30, end: 18*60+30 },
-      { time: '6:30 – 7:30', label: 'Chandu time 💌', type: 'chandu', tag: '1 hr', start: 18*60+30, end: 19*60+30 },
-      { time: '7:30 – 8:00', label: 'Dinner', type: 'routine', tag: '', start: 19*60+30, end: 20*60 },
-      { time: '8:00 – 9:30', label: 'Light revision', type: 'study', tag: '1.5 hrs', start: 20*60, end: 21*60+30 },
-      { time: '9:30 – 11:30', label: 'Full chill — recharge', type: 'personal', tag: 'new week tmr', start: 21*60+30, end: 23*60+30 },
-      { time: '11:30', label: 'Sleep', type: 'sleep', tag: '7 hrs', start: 23*60+30, end: 24*60 },
-    ]
-  },
-};
- 
-// Copy Mon blocks to Tue, Thu, Fri
-schedule.TUE.blocks = schedule.MON.blocks;
-schedule.THU.blocks = schedule.MON.blocks;
-schedule.FRI.blocks = schedule.MON.blocks;
- 
-const studyHoursMap = { SUN: 7, MON: 5.5, TUE: 5.5, WED: 3, THU: 5.5, FRI: 5.5, SAT: 8.5 };
-const weeklyOrder = ['MON','TUE','WED','THU','FRI','SAT','SUN'];
- 
-let activeDay = null;
- 
-function getCurrentMinutes() {
-  const now = new Date();
-  return now.getHours() * 60 + now.getMinutes();
-}
- 
-function getTodayKey() {
-  const jsDay = new Date().getDay(); // 0=Sun
-  return days[jsDay];
-}
- 
-function renderTabs() {
-  const tabsEl = document.getElementById('dayTabs');
-  tabsEl.innerHTML = '';
-  const today = getTodayKey();
-  weeklyOrder.forEach(d => {
-    const btn = document.createElement('button');
-    btn.className = 'day-tab' + (d === today ? ' today-marker' : '') + (d === activeDay ? ' active' : '');
-    btn.textContent = d === today ? d + ' ★' : d;
-    btn.onclick = () => { activeDay = d; renderAll(); };
-    tabsEl.appendChild(btn);
-  });
-}
- 
-function renderSchedule() {
-  const data = schedule[activeDay];
-  document.getElementById('activeDayName').textContent = fullDays[days.indexOf(activeDay)] || activeDay;
-  document.getElementById('studyHours').textContent = data.study + ' HRS STUDY';
- 
-  const now = getCurrentMinutes();
-  const isToday = activeDay === getTodayKey();
-  const timeline = document.getElementById('timeline');
-  timeline.innerHTML = '';
- 
-  data.blocks.forEach((block, i) => {
-    const div = document.createElement('div');
-    const isCurrent = isToday && now >= block.start && now < block.end;
-    div.className = `block type-${block.type}${isCurrent ? ' type-current' : ''}`;
-    div.style.animationDelay = `${i * 0.04}s`;
-    div.innerHTML = `
-      <div class="block-time">${block.time}</div>
-      <div class="block-content">
-        <div class="block-label">${block.label}</div>
-        ${block.tag ? `<div class="block-tag">${block.tag}</div>` : ''}
-      </div>
-      ${isCurrent ? '<div class="current-indicator"></div>' : ''}
-    `;
-    timeline.appendChild(div);
-  });
-}
- 
-function renderWeeklyStrip() {
-  const strip = document.getElementById('weeklyStrip');
-  strip.innerHTML = '';
-  const maxHours = 8.5;
-  weeklyOrder.forEach(d => {
-    const hrs = studyHoursMap[d];
-    const pct = (hrs / maxHours) * 100;
-    const isActive = d === activeDay;
-    strip.innerHTML += `
-      <div class="weekly-day" style="cursor:pointer" onclick="activeDay='${d}';renderAll()">
-        <div class="weekly-day-name" style="color:${isActive ? '#c8f135' : ''}">${d}</div>
-        <div class="weekly-bar">
-          <div class="weekly-bar-fill" style="height:${pct}%;background:${isActive ? '#c8f135' : '#333'}"></div>
-        </div>
-        <div class="weekly-hours" style="color:${isActive ? '#c8f135' : '#555'}">${hrs}h</div>
-      </div>
-    `;
-  });
-}
- 
-function renderAll() {
-  renderTabs();
-  renderSchedule();
-  renderWeeklyStrip();
-}
- 
-function updateClock() {
-  const now = new Date();
-  const h = String(now.getHours()).padStart(2, '0');
-  const m = String(now.getMinutes()).padStart(2, '0');
-  const s = String(now.getSeconds()).padStart(2, '0');
-  document.getElementById('clock').textContent = `${h}:${m}:${s}`;
-  const days2 = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  document.getElementById('date-display').textContent = `${days2[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`;
-}
- 
-// Init
-activeDay = getTodayKey();
-renderAll();
-updateClock();
-setInterval(updateClock, 1000);
-// Refresh current block highlight every minute
-setInterval(() => { renderSchedule(); renderWeeklyStrip(); }, 60000);
+  function showDay(day) {
+    document.querySelectorAll('.schedule').forEach(s => s.classList.remove('visible'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('day-' + day).classList.add('visible');
+    event.target.classList.add('active');
+  }
 </script>
 </body>
 </html>
